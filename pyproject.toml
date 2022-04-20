@@ -1,0 +1,27 @@
+[project]
+name = "lcutils"
+description = ""
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Robb Lankston", email = "robb@lankstonconsulting.com"},
+]
+keywords = []
+classifiers = [
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+
+dependencies = [
+    "google-cloud-storage>=1.33.0",
+    "earthengine-api>=0.1.260"
+]
+
+[project.urls]
+Source = "https://github.com/lankstonconsulting/lcutils"
