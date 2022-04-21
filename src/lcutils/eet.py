@@ -1,6 +1,6 @@
 import ee
 
-class EeHelper(object):
+class EeTools(object):
     """
     EE Helper forms a singleton object that imports the EE library and authenticates. Using this helper keeps
     authentications down to a single one per run, no matter how many times the EE library is loaded.
@@ -16,7 +16,7 @@ class EeHelper(object):
         :param kwargs: use_service_account (optional)
         """
         if cls._instance is None:
-            cls._instance = super(EeHelper, cls).__new__(cls)
+            cls._instance = super(EeTools, cls).__new__(cls)
 
             if 'use_service_account' in kwargs:
                 ee_account = kwargs['use_service_account']
@@ -51,7 +51,7 @@ class EeHelper(object):
 
     @staticmethod
     def copy_collection(source_project, source_collection, dest_project, dest_collection):
-        asset_list = EeHelper.list_assets(source_project, source_collection)
+        asset_list = EeTools.list_assets(source_project, source_collection)
         for elem in asset_list:
             source = elem['id']
             short_name = source[source.rfind('/') + 1:].replace('_', '-').replace('rpms-', '')
@@ -65,7 +65,7 @@ class EeHelper(object):
 
     @staticmethod
     def delete_assets(project, asset):
-        asset_list = EeHelper.list_assets(project, asset)
+        asset_list = EeTools.list_assets(project, asset)
         for elem in asset_list:
             source = elem['id']
             print('Deleting', source)
