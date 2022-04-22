@@ -34,9 +34,11 @@ class GcsTools(object):
 
     @staticmethod
     def check_file_exists_on_cloud(bucket, filename):
-        """
+        """[summary]
         Pass a bucket and a filename (including any prefix path
         and return whether it exists on cloud storage
+
+        Args:
         :param bucket: Bucket name
         :param filename: A path and filename to the file in the bucket
         :return: Boolean, exists or not
@@ -47,10 +49,12 @@ class GcsTools(object):
 
     @staticmethod
     def list_blobs(bucket_name, p=''):
-        """
+        """[summary]
         Return a list of all object blobs in the given bucket matching the optional prefix p
-        :param bucket_name:
-        :param p:
+
+        Args:
+        :param bucket_name: The name of the source bucket
+        :param p: An optional destination path if the sourced files are in a specific folder.
         :return:
         """
         blobs = GcsTools._client.list_blobs(bucket_name, prefix=p)
@@ -58,10 +62,12 @@ class GcsTools(object):
 
     @staticmethod
     def list_blobs_names(bucket_name, p=''):
-        """
+        """[summary]
         Return a list of all blob names in the given bucket matching the optional prefix p
-        :param bucket_name:
-        :param p:
+
+        Args:
+        :param bucket_name: The name of the source bucket
+        :param p: An optional destination folder path if the sourced files are in a specific folder.
         :return:
         """
         blobs = GcsTools._client.list_blobs(bucket_name, prefix=p)
@@ -70,10 +76,14 @@ class GcsTools(object):
 
     @staticmethod
     def get_list_blobs_uris(bucket_name, p=''):
-        """
+        """[summary]
         Return a list of all blob uris within a gcp bucket. These objects are specifically .tif files to prevent bad data from being fed in.
-        :param bucket_name:
-        :param p:
+
+        This function is specially modified and used in rpms-merge
+
+        Args:
+        :param bucket_name: The name of the source bucket
+        :param p: An optional destination path if the sourced .tif files are in a specific folder.
         :return:
         """
         #bucket = GcsTools._client.bucket(bucket_name)
@@ -97,11 +107,13 @@ class GcsTools(object):
 
     @staticmethod
     def download_temp(bucket, remote_path):
-        """
+        """[summary]
         Download a file from GCS and write it to a temporary file on disk. Return the named
         temporary file.
-        :param bucket:
-        :param remote_path:
+
+        Args:
+        :param bucket_name: The name of the source bucket
+        :param remote_path: The source path of the source blob.
         :return:
         """
         bucket = GcsTools._client.bucket(bucket)
@@ -115,10 +127,12 @@ class GcsTools(object):
 
     @staticmethod
     def download_blob(bucket, remote_path, local_path):
-        """
+        """[summary]
         Download a file from GCS and write it to disk.
-        :param bucket:
-        :param remote_path:
+        
+        Args:
+        :param bucket_name: The name of the source bucket
+        :param remote_path: The destination folder path of the sourced blob.
         :return:
         """
         bucket = GcsTools._client.bucket(bucket)
@@ -129,9 +143,11 @@ class GcsTools(object):
 
     @staticmethod
     def upload_temp(bucket_name, source_file_obj, destination_blob_name):
-        """
+        """[summary]
         Upload a file object from disk. Works with temp files, should also work with "real" files as long
         as they're open as a file object. TODO test real files
+        
+        Args:
         :param bucket_name: Bucket to upload file to
         :param source_file_obj: An active file object to upload
         :param destination_blob_name: A name, including any "subdirectories", to upload the blob to (but not bucket)
@@ -146,7 +162,15 @@ class GcsTools(object):
 
     @staticmethod
     def delete_blob(bucket_name, blob_name):
-        """Deletes a blob from the bucket."""
+        """[summary]
+        Deletes a blob from the bucket.
+
+        Args:
+        :param bucket_name: The name of the source bucket
+        :param blob_name: The source path of the source blob.
+        :return:
+        """
+        
         # bucket_name = "your-bucket-name"
         # blob_name = "your-object-name"
 
@@ -159,12 +183,14 @@ class GcsTools(object):
 
     @staticmethod
     def move_blob(source_bucket, source_blob_name, dest_bucket, dest_blob_name):
-        """
+        """[summary]
+        A function to move a blob from one bucket to the other. WARNING: This function deletes the source blob from its source folder after moving.
 
-        :param source_bucket:
-        :param source_blob_name:
-        :param dest_bucket:
-        :param dest_blob_name:
+        Args:
+        :param source_bucket: The name of the source bucket
+        :param source_blob_name: The source path of the source blob.
+        :param dest_bucket: The name of the destination bucket
+        :param dest_blob_name: The destination path of the sourced blob.
         :return:
         """
         source_bucket = GcsTools._client.bucket(source_bucket)
@@ -177,7 +203,17 @@ class GcsTools(object):
     
     @staticmethod
     def copy_blob(bucket_name, blob_name, destination_bucket_name, destination_blob_name):
-        """Copies a blob from one bucket to another with a new name."""
+        """[summary]
+        Copies a blob from one bucket to another with a new name.
+
+        Args:
+        :param bucket_name: The name of the source bucket
+        :param blob_name: The source path of the source blob.
+        :param destination_bucket_name: The name of the destination bucket
+        :param destination_blob_name: The destination path of the sourced blob.
+        :return:
+        
+        """
         # bucket_name = "your-bucket-name"
         # blob_name = "your-object-name"
         # destination_bucket_name = "destination-bucket-name"
@@ -196,12 +232,15 @@ class GcsTools(object):
     @staticmethod
     def upload_input_group(bucket_name, source_file_name, data, data_type):
         """[summary]
+        This helper function that uploads a data cluster of user inputs to a unique folder, likely named with a user generated hash id.
+
+        This function is specially modified and used in hwpc-web
 
         Args:
-            bucket_name ([type]): [description]
-            source_file_name ([type]): [description]
-            data ([type]): [description]
-            data_type ([type]): [description]
+            bucket_name ([type]): The name of the destination bucket you are uploading to.
+            source_file_name ([type]): The name of the destination folder for the user date, this consists of "hwpc-user-inputs" and the user's generated id.
+            data ([type]): The data to be delivered to the destination folder.
+            data_type ([type]): A logic check for harvested_wood_products.
         """
         
         data_json = {}
