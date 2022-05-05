@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from google.cloud import storage
 from os import environ
+import re
 import tempfile
 import json
 
@@ -89,9 +90,7 @@ class GcsTools(object):
         #bucket = GcsTools._client.bucket(bucket_name)
         blobs = GcsTools._client.list_blobs(bucket_name, prefix=p)
         year_dict = {}
-        blobnames = ["gs://"+bucket_name+"/"+x.name for x in blobs if x.name.endswith(".tif")]
-
-        print('blobs retrieved')
+        blobnames = ["gs://" + bucket_name + "/" + x.name for x in blobs if x.name.endswith(".tif")]
         
         for blob in blobnames:
             match = re.search('\d{4}',blob)
@@ -100,9 +99,7 @@ class GcsTools(object):
                 year_dict[match.group()] = temp_list
             else:
                 year_dict[match.group()].append(blob)   
-        
-        print('matches retrieved')
-            
+                    
         return year_dict
 
     @staticmethod
