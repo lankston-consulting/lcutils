@@ -1,7 +1,7 @@
 [project]
 name = "lcutils"
 description = ""
-version = "0.2.0"
+version = "0.2.1"
 readme = "README.md"
 requires-python = ">=3.7"
 license = {file = "LICENSE"}
@@ -26,4 +26,4 @@ dependencies = [
 ]
 
 [project.urls]
-Source = "https://github.com/lankstonconsulting/lcutils"
+Source = "https://github.com/lankston-consulting/lcutils"
