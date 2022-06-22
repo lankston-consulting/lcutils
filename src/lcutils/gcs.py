@@ -274,17 +274,13 @@ class GcsTools(object):
         return
 
     @staticmethod
-        def make_blob_public(bucket_name, blob_name):
-            """Makes a blob publicly accessible."""
-            # bucket_name = "your-bucket-name"
-            # blob_name = "your-object-name"
+    def make_blob_public(bucket_name, blob_name):
+        """Makes a blob publicly accessible."""
+        # bucket_name = "your-bucket-name"
+        # blob_name = "your-object-name"
 
-            
-            bucket =  GcsTools._client.bucket(bucket_name)
-            blob = bucket.blob(blob_name)
+        
+        bucket =  GcsTools._client.bucket(bucket_name)
+        blob = bucket.blob(blob_name)
 
-            blob.make_public()
-
-            print(
-                f"Blob {blob.name} is publicly accessible at {blob.public_url}"
-            )
+        blob.make_public()
