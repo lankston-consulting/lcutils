@@ -1,11 +1,13 @@
 import ee
 
+
 class EeTools(object):
     """
     EE Helper forms a singleton object that imports the EE library and authenticates. Using this helper keeps
     authentications down to a single one per run, no matter how many times the EE library is loaded.
     NOTE: for this to work, don't authenticate EE anywhere else in the project
     """
+
     _instance = None
 
     def __new__(cls, *args, **kwargs):
@@ -18,10 +20,11 @@ class EeTools(object):
         if cls._instance is None:
             cls._instance = super(EeTools, cls).__new__(cls)
 
-            if 'use_service_account' in kwargs:
-                ee_account = kwargs['use_service_account']
-                ee_credentials = ee.ServiceAccountCredentials(ee_account['account'],
-                                                              ee_account['keyfile'])
+            if "use_service_account" in kwargs:
+                ee_account = kwargs["use_service_account"]
+                ee_credentials = ee.ServiceAccountCredentials(
+                    ee_account["account"], ee_account["keyfile"]
+                )
                 ee.Initialize(ee_credentials)
             else:
                 ee.Initialize()
@@ -40,24 +43,28 @@ class EeTools(object):
         :param folder:
         :return:
         """
-        if folder == '':
-            matched = ee.data.listAssets({'parent': f'{project}/'})
+        if folder == "":
+            matched = ee.data.listAssets({"parent": f"{project}/"})
         else:
-            matched = ee.data.listAssets({'parent': f'{project}/{folder}/'})
+            matched = ee.data.listAssets({"parent": f"{project}/{folder}/"})
         assets = None
         if matched:
-            assets = matched['assets']
+            assets = matched["assets"]
         return assets
 
     @staticmethod
-    def copy_collection(source_project, source_collection, dest_project, dest_collection):
+    def copy_collection(
+        source_project, source_collection, dest_project, dest_collection
+    ):
         asset_list = EeTools.list_assets(source_project, source_collection)
         for elem in asset_list:
-            source = elem['id']
-            short_name = source[source.rfind('/') + 1:].replace('_', '-').replace('rpms-', '')
+            source = elem["id"]
+            short_name = (
+                source[source.rfind("/") + 1 :].replace("_", "-").replace("rpms-", "")
+            )
             print(short_name)
 
-            dest = dest_project + '/' + dest_collection + '/' + short_name
+            dest = dest_project + "/" + dest_collection + "/" + short_name
             print(dest)
 
             ee.data.copyAsset(source, dest)
@@ -67,6 +74,6 @@ class EeTools(object):
     def delete_assets(project, asset):
         asset_list = EeTools.list_assets(project, asset)
         for elem in asset_list:
-            source = elem['id']
-            print('Deleting', source)
+            source = elem["id"]
+            print("Deleting", source)
             ee.data.deleteAsset(source)
