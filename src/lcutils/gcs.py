@@ -272,3 +272,19 @@ class GcsTools(object):
         GcsTools().upload_temp(bucket_name, user_file, source_file_name + "user_input.json")
         user_file.close()
         return
+
+    @staticmethod
+        def make_blob_public(bucket_name, blob_name):
+            """Makes a blob publicly accessible."""
+            # bucket_name = "your-bucket-name"
+            # blob_name = "your-object-name"
+
+            
+            bucket =  GcsTools._client.bucket(bucket_name)
+            blob = bucket.blob(blob_name)
+
+            blob.make_public()
+
+            print(
+                f"Blob {blob.name} is publicly accessible at {blob.public_url}"
+            )
