@@ -166,10 +166,19 @@ class GcsTools(object):
         # We return the blob object in order to make the temporary file public for download in main.py
         return blob
 
+    @staticmethod
     def upload_from_memory(
         bucket_name: str, contents: str, destination_blob_name: str
     ) -> None:
-        """ """
+        """"[summary]
+        Upload a string from memory.
+
+        Args:
+        :param bucket_name: Bucket to upload file to
+        :param contents: A string to write to file
+        :param destination_blob_name: A name, including any "subdirectories", to upload the blob to (but not bucket)
+        :return:
+        """
         bucket = GcsTools._client.bucket(bucket_name)
         blob = bucket.blob(destination_blob_name)
 
