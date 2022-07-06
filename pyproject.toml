@@ -1,7 +1,7 @@
 [project]
 name = "lcutils"
 description = ""
-version = "0.3.1"
+version = "0.3.2"
 readme = "README.md"
 requires-python = ">=3.7"
 license = {file = "LICENSE"}
@@ -22,7 +22,8 @@ dependencies = [
     "pipenv>=2022.4.8",
     "python-dotenv>=0.20.0",
     "google-cloud-storage>=1.33.0",
-    "earthengine-api>=0.1.260"
+    "earthengine-api>=0.1.260",
+    "google-auth>=2.9.0"
 ]
 
 [project.urls]
