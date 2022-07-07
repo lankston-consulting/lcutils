@@ -253,6 +253,7 @@ class GcsTools(object):
         blob_name: str,
         destination_bucket_name: str,
         destination_blob_name: str,
+        preserve_acl: bool = False
     ) -> None:
         """[summary]
         Copies a blob from one bucket to another with a new name.
@@ -262,6 +263,8 @@ class GcsTools(object):
         :param blob_name: The source path of the source blob.
         :param destination_bucket_name: The name of the destination bucket
         :param destination_blob_name: The destination path of the sourced blob.
+        :param preserve_acl: Whether or not to preserve the ACL of the source blob.
+
         :return:
 
         """
@@ -275,7 +278,7 @@ class GcsTools(object):
         destination_bucket = GcsTools._client.bucket(destination_bucket_name)
 
         blob_copy = source_bucket.copy_blob(
-            source_blob, destination_bucket, destination_blob_name
+            source_blob, destination_bucket, destination_blob_name, preserve_acl=preserve_acl
         )
 
     @staticmethod
