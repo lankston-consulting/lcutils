@@ -243,25 +243,27 @@ class GcsTools(object):
         data_json = {}
         # Code parses through data pulled from web
         for key,value in data.items():
-            # If the input type is not a file type, it will write a text file with information and push it up to cloud storage
-            if type(value) != data_type:
-                # If the input is not empty, it will make the file and upload. If it is empty, it will be skipped and save memory.
-                if (value != ""):
+            # If the code was potentially converted from a pandas dataframe for wide-to-long formatting or is just a string type it pases through here
+            if str(type(value)) == "<class 'str'>":
+                path = source_file_name+key
+                temp_file = tempfile.TemporaryFile()
+                temp_file.write(value.encode())
+                temp_file.seek(0)
+                data_json[key] = path
+                GcsTools._client.upload_temp(bucket_name, temp_file, path)
+                temp_file.close()
+            # If the input is not empty, it will make the file and upload. If it is empty, it will be skipped and save memory.
+            if str(type(value)) == "<class 'werkzeug.datastructures.FileStorage'>":
+                if (value.content_length == "text/csv"):
                     path = source_file_name+key
-                    temp = value.encode()
                     temp_file = tempfile.TemporaryFile()
-                    temp_file.write(temp)
+                    temp_file.write(value.read())
                     temp_file.seek(0)
                     data_json[key]=path
-                    GcsTools().upload_temp(bucket_name, temp_file, path)
+                    GcsTools._client.upload_temp(bucket_name, temp_file, path)
                     temp_file.close()
-            # If it is a file type, it will directly upload the file instead
-            else:
-                # If the input is not empty, it will make the file and upload. If it is empty, it will be skipped and save memory.
-                if value.headers['Content-Type'] != 'application/octet-stream':
-                    path = source_file_name+key
-                    data_json[key]=path
-                    GcsTools().upload_temp(bucket_name, value, path)
+                path = source_file_name+key
+                data_json[key]=path
             
         # The json of all the file paths is converted into a string then to bytes to be uploaded as a temp file for use in the worker.
         data_json = json.dumps(data_json)
@@ -269,7 +271,7 @@ class GcsTools(object):
         user_file = tempfile.TemporaryFile()
         user_file.write(data_json)
         user_file.seek(0)
-        GcsTools().upload_temp(bucket_name, user_file, source_file_name + "user_input.json")
+        GcsTools._client.upload_temp(bucket_name, user_file, source_file_name + "user_input.json")
         user_file.close()
         return
 
