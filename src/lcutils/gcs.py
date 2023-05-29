@@ -85,8 +85,6 @@ class GcsTools(object):
 
         # storage_client = storage.Client()
         buckets = GcsTools._client.list_buckets()
-        for bucket in buckets:
-            print(bucket.name)
         return buckets
 
     @staticmethod

@@ -1,7 +1,7 @@
 [project]
 name = "lcutils"
 description = ""
-version = "0.3.6"
+version = "0.3.7"
 readme = "README.md"
 requires-python = ">=3.7"
 license = {file = "LICENSE"}
