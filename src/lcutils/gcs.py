@@ -80,6 +80,16 @@ class GcsTools(object):
         return blobs
 
     @staticmethod
+    def list_buckets():
+        """Lists all buckets."""
+
+        # storage_client = storage.Client()
+        buckets = GcsTools._client.list_buckets()
+        for bucket in buckets:
+            print(bucket.name)
+        return buckets
+
+    @staticmethod
     def list_blobs_names(bucket_name: str, p: str = "") -> list:
         """[summary]
         Return a list of all blob names in the given bucket matching the optional prefix p
